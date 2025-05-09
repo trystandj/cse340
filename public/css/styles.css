@@ -180,3 +180,36 @@ h1 {
   box-shadow: var(--box-shadow);
   opacity: 1;
 }
+
+#upgrades {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-size: small;
+  
+  
+}
+
+#upgrades > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+#upgrades img {
+  display: block;
+
+}
+
+.img-bx {
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 15px;
+  width: 32vw; 
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
