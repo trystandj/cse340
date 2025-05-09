@@ -1,7 +1,7 @@
 :root {
   --primary-color: #222831;
   --secondary-color: #393e46;
-  --third-color: #0092ca;
+  --third-color: #004299;
   --background-color: #ffffff;
   --font-family: 'roboto', 'opensans', 'sans-serif', 'Montserrat';
   --font-main: 'montserrat';
@@ -52,7 +52,7 @@ main {
 #wrapper {
 
   width: 100vw;      
-  height: 900px; 
+  height: 100%;
 
  
   background-color: var(--background-color);
@@ -122,7 +122,7 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
   margin: 0 auto;
   width: 95%;
 }
