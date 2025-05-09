@@ -141,8 +141,32 @@
         opacity: 1;
     }
 
-   
-      
+    #content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row-reverse;
+        padding: 10px;
+        margin: 0 auto;
+        width: 95%;
+    }
+
+    #content-left {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-size: x-large;
+    }
+ 
+    #content-right h3 {
+        font-size: xx-large;
+        color: var(--secondary-color);
+        
+    }
+
+ 
+    
     #upgrades {
 
         font-size: x-large;
