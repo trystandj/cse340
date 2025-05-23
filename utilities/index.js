@@ -60,6 +60,49 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
+/* **************************************
+* Build the detail view HTML
+* ************************************ */
+Util.buildDetailGrid = async function (data){
+  
+  let grid
+  if(data.length > 0){
+    grid = '<h1>' + data[0].inv_year + ' ' + data[0].inv_make + ' ' + data[0].inv_model + '</h1>'
+    grid += '<div id="detail-display">'
+    data.forEach(vehicle => { 
+     
+      grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
+      + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
+      + 'details"><img src="' + vehicle.inv_image 
+      +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
+      +' on CSE Motors" /></a>'
+      grid += '<div class="namePrice">'
+      grid += '<div class="detailSection">'
+      grid += '<h2>'
+      grid +=  data[0].inv_make + ' ' + data[0].inv_model  + ' ' + 'Details'
+      grid += '</h2>'
+       grid += '<span>' + '<strong>Price:</strong>' + ' ' + '$' 
+      + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
+      grid += '<span><strong>Description:</strong> ' + vehicle.inv_description + '</span>';
+      grid += '<span><strong>Color:</strong> ' + vehicle.inv_color + '</span>';
+      grid += '<span><strong>Miles:</strong> ' + new Intl.NumberFormat('en-US').format(vehicle.inv_miles) + '</span>';
+      grid += '</div>'
+
+     
+      
+
+      
+      grid += '</div>'
+      grid += '</div>'
+      
+    })
+  }
+  else { 
+    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+  }
+  return grid
+}
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 

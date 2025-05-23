@@ -210,5 +210,14 @@
         width: 300px;
         height: 400px;
     }
+
+    #detail-display {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row;
+    padding: 20px;
+    gap: 25px;
+    }
   
 }

@@ -248,11 +248,7 @@ h1 {
 
 }
 
-#inv-display img {
 
-  
-
-} 
 
 .namePrice {
   display: flex;
@@ -268,4 +264,42 @@ h1 {
   height: 1px;
   background-color: black;
   border: none;
+}
+
+
+#detail-display {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 20px;
+  gap: 25px;
+}
+
+#detail-display img {
+  width: auto;
+  height: 200px;
+  max-width: 250px;
+
+  object-fit: scale-down;
+}
+
+.detailSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+  
+}
+
+.detailSection > :not(h2) {
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.detailSection > span:nth-child(even) {
+    background-color: rgb(230, 230, 230);
 }
