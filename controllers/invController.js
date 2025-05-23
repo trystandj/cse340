@@ -34,4 +34,20 @@ invCont.buildByDetailId = async function (req, res, next) {
   })
 }
 
+/* ********************************
+ *  Trigger an error for testing
+ * ******************************** */
+invCont.triggerError = async function (req, res, next) {
+  const inv_id = req.params.detailId
+  const data = await invModel.getInventoryByDetailId(inv_id)
+  const grid = await utilities.buildDetailGrid(data)
+  const nav = await utilities.getNav()
+  const className = data[0].classification_name
+  res.render("./inventory/detail", {
+    title: className + " vehicles",
+    nav,
+    grid,
+  })
+  throw new Error("This is a test error")
+};
 module.exports = invCont;
