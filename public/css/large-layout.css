@@ -229,5 +229,39 @@
         margin: 0 auto;
         width: 50%;
     }
-  
+
+    
+    .form-group {
+    
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px;
+    padding: 10px;
+    
+    }
+
+    .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 20px;
+    gap: 25px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 400px;
+
+    }
+
+    .content form {
+    width: 90%;
+    
+    
+    }
+    
 }

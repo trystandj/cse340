@@ -303,3 +303,56 @@ h1 {
 .detailSection > span:nth-child(even) {
     background-color: rgb(230, 230, 230);
 }
+
+
+.content {
+    display: grid;
+  place-items: center;
+  
+}
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 20px;
+  gap: 25px;
+  background-color: var(--primary-color);
+   color: white;
+   border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  max-width: 375px;
+
+}
+
+
+
+.form-group {
+ 
+  display: flex;
+  flex-direction: column;
+
+  margin: 20px;
+  padding: 10px;
+  
+}
+
+
+.form-group a{
+ 
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  
+}
+
+.form-group a:hover {
+
+  text-decoration: underline;
+}
+
+.content form {
+  width: 100%;
+ 
+ 
+}
