@@ -14,7 +14,7 @@ router.get("/login", utils.handleErrors(accountController.buildLogin));
 // Route to deliver register view
 router.get("/register", utils.handleErrors(accountController.buildRegister));
 
-
+router.post('/register', utils.handleErrors(accountController.registerAccount))
 
 module.exports = router;
 

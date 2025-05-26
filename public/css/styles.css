@@ -356,3 +356,13 @@ h1 {
  
  
 }
+
+input:invalid {
+  border: 2px red;
+  background-color: #f8dddd;
+}
+
+input:valid {
+  border: 2px green;
+  background-color: #e6ffe6;
+}
