@@ -357,7 +357,7 @@ h1 {
  
 }
 
-input:invalid {
+input:required:invalid, input:focus:invalid {
   border: 2px red;
   background-color: #f8dddd;
 }

@@ -5,6 +5,14 @@
   res.redirect('/')
 } %>
 
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
 
 <!-- This is the content -->
  <div class="content">
@@ -28,7 +36,7 @@
             id="account_password"
             name="account_password"
             required
-            pattern="(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}"
+            pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
             title="Password must be at least 8 characters long and include one uppercase letter, one number, and one special character (!@#$%^&*)">
         </div>
         <div class="form-group">
