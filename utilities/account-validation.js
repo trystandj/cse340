@@ -3,6 +3,8 @@ const express = require("express")
 const router = new express.Router() 
 const accountController = require("../controllers/accountController")
 const utils = require("../utilities")
+const accountModel = require("../models/account-model")
+
 
 const utilities = require(".")
   const { body, validationResult } = require("express-validator")
@@ -38,6 +40,18 @@ const utilities = require(".")
       .isEmail()
       .normalizeEmail() // refer to validator.js docs
       .withMessage("A valid email is required."),
+      // valid email is required and cannot already exist in the database
+      body("account_email")
+        .trim()
+        .isEmail()
+        .normalizeEmail() // refer to validator.js docs
+        .withMessage("A valid email is required.")
+        .custom(async (account_email) => {
+          const emailExists = await accountModel.checkExistingEmail(account_email)
+          if (emailExists){
+            throw new Error("Email exists. Please log in or use different email")
+          }
+        }),
   
       // password is required and must be strong password
       body("account_password")
@@ -52,6 +66,22 @@ const utilities = require(".")
         })
         .withMessage("Password does not meet requirements."),
     ]
+  }
+
+  validate.checkLoginData = () => {
+    return body("account_email" && "account_password")
+        .trim()
+        .isEmail("account_email")
+        .normalizeEmail("account_email") // refer to validator.js docs
+        .notEmpty("account_password")
+        .withMessage("A valid email and password is required.")
+        .custom(async (account_email, account_passwrod) => {
+          const userExists = await accountModel.checkExistingPassword(account_email, account_passwrod)
+          if (userExists){
+            throw new Error("User exists. Please log in or use different email")
+          }
+        })
+    
   }
 
 
