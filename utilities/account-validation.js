@@ -68,6 +68,23 @@ const utilities = require(".")
     ]
   }
 
+  validate.loginRules = () => {
+    return [
+      // email is required and must be valid
+      body("account_email")
+        .trim()
+        .isEmail()
+        .normalizeEmail() // refer to validator.js docs
+        .withMessage("A valid email is required."),
+
+      // password is required and must not be empty
+      body("account_password")
+        .trim()
+        .notEmpty()
+        .withMessage("A password is required."),
+    ]
+  }
+
   validate.checkLoginData = () => {
     return body("account_email" && "account_password")
         .trim()
