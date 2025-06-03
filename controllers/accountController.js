@@ -104,7 +104,7 @@ async function accountLogin(req, res) {
       } else {
         res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
       }
-      return res.redirect("/account/account")
+      return res.redirect("/account/")
     }
     else {
       req.flash("message notice", "Please check your credentials and try again.")
@@ -136,7 +136,7 @@ async function buildAccount(req, res) {
       title: "Account",
       nav,
       errors: null,
-      accountData, // pass this to the view
+      accountData, 
     })
   } catch (err) {
     req.flash("notice", "Session expired. Please log in again.")
