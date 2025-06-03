@@ -22,6 +22,11 @@ router.get("/add-classification", utils.handleErrors(invController.buildAddClass
 // Route to add classification
 router.get("/getInventory/:classification_id", utils.handleErrors(invController.getInventoryJSON))
 
+// route to edit inventory
+router.get("/edit/:inv_id", utils.handleErrors(invController.buildEditInventory));
+
+// update inventory
+router.post("/update/", regValidate.inventoryRules(), regValidate.checkUpdateData, utils.handleErrors(invController.updateInventory))
 
 router.post(
   "/add-classification",
