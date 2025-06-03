@@ -104,7 +104,7 @@ async function accountLogin(req, res) {
       } else {
         res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
       }
-      return res.redirect("/account/")
+      return res.redirect("/account/account")
     }
     else {
       req.flash("message notice", "Please check your credentials and try again.")
@@ -147,7 +147,6 @@ async function buildAccount(req, res) {
 // Export the controller functions
 accountController.buildLogin = buildLogin
 accountController.buildRegister = buildRegister
-
 accountController.buildAccount = buildAccount
 accountController.accountLogin = accountLogin
 accountController.registerAccount = registerAccount
