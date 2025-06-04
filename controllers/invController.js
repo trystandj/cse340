@@ -278,6 +278,47 @@ invCont.updateInventory = async function (req, res, next) {
   }
 }
 
+invCont.deleteView = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  const inv_id = parseInt(req.params.inv_id)
+  const itemData = await invModel.getInventoryByDetailId(inv_id)
+
+  const itemDataArrau = itemData[0]
+  console.log(itemData)
+  
+  const itemName = `${itemDataArrau.inv_make} ${itemDataArrau.inv_model}`
+  res.render("./inventory/delete-confirm", {
+    title: "Delete " + itemName,
+    nav,
+    errors: null,
+    inv_id: itemDataArrau.inv_id,
+    inv_make: itemDataArrau.inv_make,
+    inv_model: itemDataArrau.inv_model,
+    inv_year: itemDataArrau.inv_year,
+    inv_price: itemDataArrau.inv_price,
+  })
+}
+
+invCont.deleteItem = async function (req, res, next) {
+  
+  
+   const { inv_id } = req.body
+  console.log(inv_id)
+  const deleteResult = await invModel.deleteInventoryItem(inv_id)
+  console.log(deleteResult)
+
+  if (deleteResult) {
+    req.flash("success", `The item successfully deleted.`)
+    res.redirect("/inv/management")
+    
+  } else {
+    req.flash("error", `The item was not deleted.`)
+    res.redirect("inventory/delete-confirm")
+  }
+}
+
+
+
 invCont.addView = addView
 invCont.addClassification = addClassification
 

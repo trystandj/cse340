@@ -93,7 +93,7 @@ Util.buildDetailGrid = async function (data){
       grid += '</div>'
       grid += '</div>'
       
-    })
+    }) 
   }
   else { 
     grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
