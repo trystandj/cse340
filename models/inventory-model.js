@@ -119,6 +119,8 @@ async function updateInventory(
 }
 
 
+
+
 /* ***************************
  *  Delete Inventory Item
  * ************************** */
@@ -132,4 +134,4 @@ async function updateInventory(
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryByDetailId, addClassificationRow, addViewRow, updateInventory, deleteInventoryItem};
+module.exports = { getClassifications, getInventoryByClassificationId, getInventoryByDetailId, addClassificationRow, addViewRow, updateInventory, deleteInventoryItem};

@@ -314,7 +314,10 @@ invCont.deleteItem = async function (req, res, next) {
   } else {
     req.flash("error", `The item was not deleted.`)
     res.redirect("inventory/delete-confirm")
-  }
+  } 
+
+
+  
 }
 
 

@@ -14,22 +14,22 @@ router.get("/detail/:detailId", utils.handleErrors(invController.buildByDetailId
 router.get("/error-test", utils.handleErrors(invController.triggerError));
 
 // Route to build management view
-router.get("/management", utils.handleErrors(invController.buildManagement))
+router.get("/management", utils.checkEmployeeOrAdmin, utils.handleErrors(invController.buildManagement))
 
 // Route to build add classification view
-router.get("/add-classification", utils.handleErrors(invController.buildAddClassification));
+router.get("/add-classification", utils.checkEmployeeOrAdmin, utils.handleErrors(invController.buildAddClassification));
 
 // Route to add classification
-router.get("/getInventory/:classification_id", utils.handleErrors(invController.getInventoryJSON))
+router.get("/getInventory/:classification_id", utils.checkEmployeeOrAdmin, utils.handleErrors(invController.getInventoryJSON))
 
 // route to edit inventory
-router.get("/edit/:inv_id", utils.handleErrors(invController.buildEditInventory));
+router.get("/edit/:inv_id", utils.checkEmployeeOrAdmin, utils.handleErrors(invController.buildEditInventory));
 
 // delete route
-router.get("/delete/:inv_id", utils.handleErrors(invController.deleteView))
+router.get("/delete/:inv_id", utils.checkEmployeeOrAdmin, utils.handleErrors(invController.deleteView))
 
 // update inventory
-router.post("/update/", regValidate.inventoryRules(), regValidate.checkUpdateData, utils.handleErrors(invController.updateInventory))
+router.post("/update/", regValidate.inventoryRules(), utils.checkEmployeeOrAdmin, regValidate.checkUpdateData, utils.handleErrors(invController.updateInventory))
 
 router.post(
   "/add-classification",
@@ -54,6 +54,8 @@ router.post(
 
   utils.handleErrors(invController.deleteItem)
 );
+
+
 
 module.exports = router;
 

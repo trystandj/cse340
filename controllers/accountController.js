@@ -6,20 +6,21 @@ require("dotenv").config()
 
 const accountController = {}
 
-
 /* ****************************************
 *  Deliver login view
 * *************************************** */
-async function buildLogin(req, res, next) {
+async function buildLogin(req, res) {
   let nav = await utilities.getNav()
-  
   res.render("account/login", {
     title: "Login",
     nav,
   })
 }
 
-async function buildRegister(req, res, next) {
+/* ****************************************
+*  Deliver registration view
+* *************************************** */
+async function buildRegister(req, res) {
   let nav = await utilities.getNav()
   res.render("account/register", {
     title: "Register",
@@ -27,8 +28,6 @@ async function buildRegister(req, res, next) {
     errors: null
   })
 }
-
-
 /* ****************************************
 *  Process Registration
 * *************************************** */
@@ -77,7 +76,6 @@ async function registerAccount(req, res) {
   }
 }
 
-
 /* ****************************************
  *  Process login request
  * ************************************ */
@@ -120,7 +118,6 @@ async function accountLogin(req, res) {
   }
 }
 
-
 async function buildAccount(req, res) {
   let nav = await utilities.getNav()
   const token = req.cookies.jwt
@@ -144,11 +141,122 @@ async function buildAccount(req, res) {
   }
 }
 
-// Export the controller functions
-accountController.buildLogin = buildLogin
-accountController.buildRegister = buildRegister
-accountController.buildAccount = buildAccount
-accountController.accountLogin = accountLogin
-accountController.registerAccount = registerAccount
+/* ****************************************
+ *  Logout and clear session cookie
+ * *************************************** */
+async function logout(req, res) {
+  res.clearCookie("jwt")
+  req.flash("notice", "You have been logged out.")
+  return res.redirect("/account/login")
+}
 
-module.exports = { buildLogin, buildRegister,  accountLogin, buildAccount, registerAccount }
+/* ****************************************
+ *  Process user info update
+ * *************************************** */
+async function updateUser(req, res) {
+  let nav = await utilities.getNav()
+  const { account_id, account_firstname, account_lastname, account_email } = req.body
+
+  const updateResult = await accountModel.updateUserRow(
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email
+  )
+
+  if (updateResult) {
+    req.flash("success", "Congratulations, Account has been updated.")
+    return res.redirect("/account/account")
+  } else {
+    req.flash("error", "Sorry, the account update failed.")
+    return res.status(501).render("account/account", {
+      title: "Account Management",
+      nav,
+    })
+  }
+}
+
+/* ****************************************
+ *  Process user psw update
+ * *************************************** */
+async function updatePassword(req, res) {
+ const {  account_id, account_password } = req.body
+
+    // Hash the password before storing
+  let hashedPassword
+  try {
+    // regular password and cost (salt is generated automatically)
+    hashedPassword = await bcrypt.hashSync(account_password, 10)
+  } catch (error) {
+    req.flash("message notice", 'Sorry, there was an error processing the update.')
+    res.status(500).render("account/account", {
+      title: "Account Management",
+      nav,
+      errors: null,
+    })
+  }
+
+ const updateResult = await accountModel.updateUserPassword(
+  account_id,
+  hashedPassword
+)
+
+  if (updateResult) {
+    req.flash("notice", "Congratulations, Account has been updated.")
+    return res.redirect("/account/account")
+  } else {
+    req.flash("message notice", "Sorry, the account update failed.")
+    return res.status(501).render("account/account", {
+      title: "Account Management",
+      nav,
+    })
+  }
+}
+
+
+/* ***************************
+ *  Build edit account view
+ * ************************** */
+ async function buildEditAccount(req, res, next) {
+  const account_id = res.locals.accountData.account_id
+  console.log(account_id)
+  let nav = await utilities.getNav()
+
+  try {
+    const accountData = await accountModel.getAccountID(account_id)
+  console.log(accountData)
+    if (!accountData) {
+      req.flash("notice", "Account not found.")
+      return res.redirect("/account/")
+    }
+
+    res.render("./account/update-account", {
+      title: `Edit Account - ${accountData.account_firstname} ${accountData.account_lastname}`,
+      nav,
+      errors: null,
+      account_id: accountData.account_id,
+      account_firstname: accountData.account_firstname,
+      account_lastname: accountData.account_lastname,
+      account_email: accountData.account_email
+    })
+
+  } catch (error) {
+    console.error("Error building edit account view:", error)
+    req.flash("notice", "An error occurred. Please try again.")
+    res.redirect("/account/")
+  }
+}
+
+
+// Export all functions
+module.exports = {
+  buildLogin,
+  buildRegister,
+  registerAccount,
+  accountLogin,
+  buildAccount,
+  logout,
+  updateUser,
+  buildEditAccount,
+  updatePassword
+}

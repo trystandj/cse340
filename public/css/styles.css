@@ -315,7 +315,7 @@ h1 {
   place-items: center;
   
 }
-.login-container, .add-classification-container, .add-view-container {
+.login-container, .add-classification-container, .add-view-container, .password-container, .update-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -327,7 +327,7 @@ h1 {
    border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   max-width: 375px;
-
+  margin-bottom: 50px;
 }
 
 

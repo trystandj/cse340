@@ -37,6 +37,8 @@ const cookieParser = require("cookie-parser")
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencodedv
 
+
+
 // Express Messages Middleware
 app.use(require('connect-flash')())
 app.use(function(req, res, next){
@@ -46,6 +48,8 @@ app.use(function(req, res, next){
 
 app.use(cookieParser())
 app.use(utilities.checkJWTToken)
+
+
 /* ***********************
  * View Engine and Templates
  *************************/
