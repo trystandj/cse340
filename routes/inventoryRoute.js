@@ -7,8 +7,12 @@ const regValidate = require('../utilities/data-validation')
 
 // Route to build inventory by classification view
 router.get("/type/:classificationId", utils.handleErrors(invController.buildByClassificationId));
+
 // Route to build detail page by inv_id view
 router.get("/detail/:detailId", utils.handleErrors(invController.buildByDetailId)); 
+
+// Route to buy detail page by inv_id view
+router.get("/buy/:detailId",utils.checkClient, utils.handleErrors(invController.buildBuyPageDetailId)); 
 
 // error trigger 500
 router.get("/error-test", utils.handleErrors(invController.triggerError));
@@ -47,6 +51,16 @@ router.post(
   regValidate.inventoryRules(),
   regValidate.checkInventoryData,
   utils.handleErrors(invController.addView)
+);
+
+
+
+// Route to add view
+router.post(
+  "/buy",
+  regValidate.purchaseRules,
+  regValidate.checkPurchaseData,
+  utils.handleErrors(invController.savePurchases)
 );
 
 router.post(

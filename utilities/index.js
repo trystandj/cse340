@@ -89,7 +89,9 @@ Util.buildDetailGrid = async function (data){
       grid += '<span><strong>Description:</strong> ' + vehicle.inv_description + '</span>';
       grid += '<span><strong>Color:</strong> ' + vehicle.inv_color + '</span>';
       grid += '<span><strong>Miles:</strong> ' + new Intl.NumberFormat('en-US').format(vehicle.inv_miles)   + '</span>';
-      grid += '</div>'
+     grid += '<span><strong>Buy:</strong> ' + '<a href="../../inv/buy/' + vehicle.inv_id +'" title="View ' 
+      + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
+      + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>' 
       grid += '</div>'
       grid += '</div>'
       
@@ -100,6 +102,46 @@ Util.buildDetailGrid = async function (data){
   }
   return grid
 }
+
+
+/* **************************************
+* Build the Buy view HTML
+* ************************************ */
+Util.buildBuyGrid = async function (data){
+  
+  let grid
+  if(data.length > 0){
+    grid = '<h1>Buy The ' + data[0].inv_year + ' ' + data[0].inv_make + ' ' + data[0].inv_model + '</h1>'
+    grid += '<div id="buy-display">'
+    data.forEach(vehicle => { 
+     
+      grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
+      + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
+      + 'details"><img src="' + vehicle.inv_image 
+      +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
+      +' on CSE Motors"></a>'
+      grid += '<div class="namePrice">'
+      grid += '<div class="detailSection">'
+      grid += '<h2>'
+      grid +=  data[0].inv_make + ' ' + data[0].inv_model  + ' ' + 'Details'
+      grid += '</h2>'
+       grid += '<span>' + '<strong>Price:</strong>' + ' ' + '$' 
+      + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
+      grid += '<span><strong>Description:</strong> ' + vehicle.inv_description + '</span>';
+      grid += '<span><strong>Color:</strong> ' + vehicle.inv_color + '</span>';
+      grid += '<span><strong>Miles:</strong> ' + new Intl.NumberFormat('en-US').format(vehicle.inv_miles)   + '</span>';
+
+      grid += '</div>'
+      grid += '</div>'
+      
+    }) 
+  }
+  else { 
+    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+  }
+  return grid
+}
+
 
 // management view
 Util.buildManagementView = async function () {
@@ -188,6 +230,18 @@ Util.checkJWTToken = (req, res, next) => {
   }
 
   req.flash("notice", "You must be logged in with appropriate permissions to access that area.")
+  return res.status(403).redirect("/account/login")
+}
+
+
+ Util.checkClient = (req, res, next) => {
+  const accountData = res.locals.accountData
+
+  if (res.locals.loggedin && (accountData.account_type === "Client")) {
+    return next()
+  }
+
+  req.flash("notice", "You must be logged in.")
   return res.status(403).redirect("/account/login")
 }
 

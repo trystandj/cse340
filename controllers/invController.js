@@ -35,6 +35,96 @@ invCont.buildByDetailId = async function (req, res, next) {
   })
 }
 
+
+
+invCont.buildBuyPageDetailId = async function (req, res, next) {
+  const inv_id = req.params.detailId
+  
+  const data = await invModel.getInventoryByDetailId(inv_id)
+  const grid = await utilities.buildBuyGrid(data)
+  const nav = await utilities.getNav()
+  
+  res.render("./inventory/buy", {
+    title: "Purchase Request",
+    nav,
+    errors: null,
+    grid,
+    inv_id,
+    account_id: res.locals.accountData.account_id
+  })
+}
+
+invCont.savePurchases = async function (req, res, next) {
+  const nav = await utilities.getNav()
+
+  const {
+    prch_contact,
+    prch_credit,
+    prch_down_payment,
+    prch_time_loan,
+    prch_pay_meathod,
+    prch_trade,
+    prch_custom,
+    inv_id
+  } = req.body
+
+  // Get account_id from session or req.user, not from req.body
+  const account_id = res.locals.accountData.account_id
+console.log("Account ID before insert:", account_id);
+  if (!account_id) {
+    console.log("Account ID before insert:", account_id);
+    req.flash("error", "You must be logged in to make a purchase.")
+    return res.redirect("/login")  // or wherever your login page is
+  }
+
+  try {
+    const data = await invModel.getInventoryByDetailId(inv_id)
+    const grid = await utilities.buildBuyGrid(data)
+
+    const result = await invModel.savePurchase(
+      prch_contact,
+      prch_credit,
+      prch_down_payment,
+      prch_time_loan,
+      prch_pay_meathod,
+      prch_trade,
+      prch_custom,
+      inv_id,
+      account_id
+    )
+
+    if (result) {
+      req.flash("success", "Purchase request submitted successfully.")
+      res.redirect("/inv/management")
+    } else {
+      throw new Error("Database insert failed")
+    }
+  } catch (error) {
+    console.error("savePurchase error:", error)
+
+    const data = await invModel.getInventoryByDetailId(inv_id)
+    const grid = await utilities.buildBuyGrid(data)
+
+    req.flash("error", "Sorry, the request failed to save.")
+    res.status(500).render("inventory/buy", {
+      title: "Purchase Request",
+      nav,
+      grid,
+      errors: null,
+      prch_contact,
+      prch_credit,
+      prch_down_payment,
+      prch_time_loan,
+      prch_pay_meathod,
+      prch_trade,
+      prch_custom,
+      inv_id,
+      account_id
+    })
+  }
+}
+
+
 /* ********************************
  *  Trigger an error for testing
  * ******************************** */

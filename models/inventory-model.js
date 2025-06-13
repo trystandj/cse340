@@ -134,4 +134,55 @@ async function updateInventory(
   }
 }
 
-module.exports = { getClassifications, getInventoryByClassificationId, getInventoryByDetailId, addClassificationRow, addViewRow, updateInventory, deleteInventoryItem};
+
+
+async function savePurchase(
+  prch_contact,
+  prch_credit,
+  prch_down_payment,
+  prch_time_loan,
+  prch_pay_meathod,
+  prch_trade,
+  prch_custom,
+  inv_id,
+  account_id
+) {
+  const sql = `
+    INSERT INTO public.purchase (
+      prch_contact,
+      prch_credit,
+      prch_down_payment,
+      prch_time_loan,
+      prch_pay_meathod,
+      prch_trade,
+      prch_custom,
+      inv_id,
+      account_id
+    ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+    RETURNING *
+  `
+
+  const values = [
+    prch_contact,
+    prch_credit,
+    prch_down_payment,
+    prch_time_loan,
+    prch_pay_meathod,
+    prch_trade,
+    prch_custom,
+    inv_id,
+    account_id
+  ]
+
+  try {
+    const result = await pool.query(sql, values)
+    return result.rows[0]
+  } catch (error) {
+    console.error("savePurchase error:", error)
+    return null
+  }
+}
+
+
+
+module.exports = { savePurchase, getClassifications, getInventoryByClassificationId, getInventoryByDetailId, addClassificationRow, addViewRow, updateInventory, deleteInventoryItem};
