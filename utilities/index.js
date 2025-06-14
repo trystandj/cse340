@@ -63,6 +63,59 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
+
+Util.buildPurchaseRequestGrid = async function (purchaseData) {
+  let grid = '';
+
+  if (purchaseData.length > 0) {
+    grid = ' '
+
+    purchaseData.forEach(prch => {
+
+
+      grid += '<div class="purchasecard">';
+      grid += '<div class="namePrice">';
+      grid += `<h2><a href="../../inv/detail/${prch.inv_id}" title="View ${prch.inv_make} ${prch.inv_model} details">${prch.inv_make} ${prch.inv_model}</a></h2>`;
+      grid += `<span>$${new Intl.NumberFormat('en-US').format(prch.inv_price)}</span>`;
+      grid += '</div>';
+
+      grid +=  '<a href="../../inv/detail/'+ prch.inv_id 
+      + '" title="View ' + prch.inv_make + ' '+ prch.inv_model 
+      + 'details"><img src="' + prch.inv_image 
+      +'" alt="Image of '+ prch.inv_make + ' ' + prch.inv_model 
+      +' on CSE Motors"></a>'
+      
+      grid += '<div class="purchaseDetails">';
+      grid += `<p><strong>Contact:</strong> ${prch.prch_contact}</p>`;
+      grid += `<p><strong>Credit Score:</strong> ${prch.prch_credit}</p>`;
+      grid += `<p><strong>Down Payment:</strong> ${prch.prch_down_payment}</p>`;
+      grid += `<p><strong>Loan Period:</strong> ${prch.prch_time_loan} months</p>`;
+      grid += `<p><strong>Payment Method:</strong> ${prch.prch_pay_meathod}</p>`;
+      grid += `<p><strong>Trade-in Allowance:</strong> ${prch.prch_trade}</p>`;
+      grid += `<p><strong>Custom Requests:</strong> ${prch.prch_custom}</p>`;
+      grid += '</div>';
+
+     
+      grid += '<div class="userInfo">';
+      grid += `<p><strong>Requested By:</strong> ${prch.account_firstname} ${prch.account_lastname}</p>`;
+      grid += `<p><strong>Email:</strong> ${prch.account_email}</p>`;
+      grid += '</div>';
+      grid += '</div>';
+      
+     
+
+     
+    });
+
+   
+  } else {
+    grid = '<p class="notice">No purchase requests found.</p>';
+  }
+
+  return grid;
+};
+
+
 /* **************************************
 * Build the detail view HTML
 * ************************************ */
@@ -109,39 +162,36 @@ Util.buildDetailGrid = async function (data){
 * ************************************ */
 Util.buildBuyGrid = async function (data){
   
-  let grid
-  if(data.length > 0){
-    grid = '<h1>Buy The ' + data[0].inv_year + ' ' + data[0].inv_make + ' ' + data[0].inv_model + '</h1>'
-    grid += '<div id="buy-display">'
-    data.forEach(vehicle => { 
-     
-      grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
-      + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
-      + 'details"><img src="' + vehicle.inv_image 
-      +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
-      +' on CSE Motors"></a>'
-      grid += '<div class="namePrice">'
-      grid += '<div class="detailSection">'
-      grid += '<h2>'
-      grid +=  data[0].inv_make + ' ' + data[0].inv_model  + ' ' + 'Details'
-      grid += '</h2>'
-       grid += '<span>' + '<strong>Price:</strong>' + ' ' + '$' 
-      + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
-      grid += '<span><strong>Description:</strong> ' + vehicle.inv_description + '</span>';
-      grid += '<span><strong>Color:</strong> ' + vehicle.inv_color + '</span>';
-      grid += '<span><strong>Miles:</strong> ' + new Intl.NumberFormat('en-US').format(vehicle.inv_miles)   + '</span>';
+let grid = "";
 
-      grid += '</div>'
-      grid += '</div>'
-      
-    }) 
+  if (data.length > 0) {
+    const vehicle = data[0]; 
+
+    grid += `<div class="invcontent">`;
+    grid += `<h1>Buy The ${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h1>`;
+    grid += `<div id="buy-display">`;
+    grid += `<a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">`;
+    grid += `<img src="${vehicle.inv_image}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model} on CSE Motors">`;
+    grid += `</a>`;
+
+    grid += `<div class="namePrice">`;
+    grid += `<div class="detailSection">`;
+    grid += `<h2>${vehicle.inv_make} ${vehicle.inv_model} Details</h2>`;
+    grid += `<span><strong>Price:</strong> $${new Intl.NumberFormat("en-US").format(vehicle.inv_price)}</span>`;
+    grid += `<span><strong>Description:</strong> ${vehicle.inv_description}</span>`;
+    grid += `<span><strong>Color:</strong> ${vehicle.inv_color}</span>`;
+    grid += `<span><strong>Miles:</strong> ${new Intl.NumberFormat("en-US").format(vehicle.inv_miles)}</span>`;
+    grid += `</div>`;
+    grid += `</div>`;
+    grid += `</div>`;
+    grid += `</div>`; 
+
+  } else {
+    grid = `<p class="notice">Sorry, no matching vehicles could be found.</p>`;
   }
-  else { 
-    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
-  }
-  return grid
+
+  return grid;
 }
-
 
 // management view
 Util.buildManagementView = async function () {
@@ -244,5 +294,7 @@ Util.checkJWTToken = (req, res, next) => {
   req.flash("notice", "You must be logged in.")
   return res.status(403).redirect("/account/login")
 }
+
+
 
 module.exports = Util

@@ -43,7 +43,7 @@ invCont.buildBuyPageDetailId = async function (req, res, next) {
   const data = await invModel.getInventoryByDetailId(inv_id)
   const grid = await utilities.buildBuyGrid(data)
   const nav = await utilities.getNav()
-  
+
   res.render("./inventory/buy", {
     title: "Purchase Request",
     nav,
@@ -54,9 +54,9 @@ invCont.buildBuyPageDetailId = async function (req, res, next) {
   })
 }
 
+
 invCont.savePurchases = async function (req, res, next) {
   const nav = await utilities.getNav()
-
   const {
     prch_contact,
     prch_credit,
@@ -67,19 +67,18 @@ invCont.savePurchases = async function (req, res, next) {
     prch_custom,
     inv_id
   } = req.body
-
-  // Get account_id from session or req.user, not from req.body
   const account_id = res.locals.accountData.account_id
-console.log("Account ID before insert:", account_id);
+
   if (!account_id) {
-    console.log("Account ID before insert:", account_id);
     req.flash("error", "You must be logged in to make a purchase.")
-    return res.redirect("/login")  // or wherever your login page is
+    return res.redirect("/login")
   }
 
   try {
+
     const data = await invModel.getInventoryByDetailId(inv_id)
     const grid = await utilities.buildBuyGrid(data)
+
 
     const result = await invModel.savePurchase(
       prch_contact,
@@ -95,35 +94,54 @@ console.log("Account ID before insert:", account_id);
 
     if (result) {
       req.flash("success", "Purchase request submitted successfully.")
-      res.redirect("/inv/management")
+      return res.redirect("/inv/management")
     } else {
-      throw new Error("Database insert failed")
+      throw new Error("Purchase save failed")
     }
   } catch (error) {
-    console.error("savePurchase error:", error)
+    console.error(error)
 
-    const data = await invModel.getInventoryByDetailId(inv_id)
+    const data = await invModel.getInventoryByDetailId(req.body.inv_id)
     const grid = await utilities.buildBuyGrid(data)
 
-    req.flash("error", "Sorry, the request failed to save.")
     res.status(500).render("inventory/buy", {
       title: "Purchase Request",
       nav,
+      errors: [error.message], 
       grid,
-      errors: null,
-      prch_contact,
-      prch_credit,
-      prch_down_payment,
-      prch_time_loan,
-      prch_pay_meathod,
-      prch_trade,
-      prch_custom,
-      inv_id,
-      account_id
+      prch_contact: req.body.prch_contact,
+      prch_credit: req.body.prch_credit,
+      prch_down_payment: req.body.prch_down_payment,
+      prch_time_loan: req.body.prch_time_loan,
+      prch_pay_meathod: req.body.prch_pay_meathod,
+      prch_trade: req.body.prch_trade,
+      prch_custom: req.body.prch_custom,
+      inv_id: req.body.inv_id,
+      account_id,
     })
   }
 }
 
+
+
+
+invCont.buildPurchaseRequestsByAccount = async function (req, res, next) {
+  try {
+
+    const purchaseData = await invModel.getPurchasesWithInventoryAndAccount(); 
+
+    const grid = await utilities.buildPurchaseRequestGrid(purchaseData);
+    const nav = await utilities.getNav();
+
+    res.render("inventory/purchases", {
+      title: "All Purchase Requests",
+      nav,
+      grid,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 /* ********************************
  *  Trigger an error for testing
@@ -305,6 +323,9 @@ invCont.buildEditInventory = async function (req, res, next) {
     classification_id: itemData.classification_id
   })
 }
+
+
+
 
 
 

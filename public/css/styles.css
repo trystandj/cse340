@@ -396,3 +396,109 @@ input:valid {
 #add-inventory {
   width: 500px;
 }
+
+.purchasecard {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 20px auto;
+  max-width: 600px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  font-family: Arial, sans-serif;
+}
+
+.namePrice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.namePrice h2 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.namePrice span {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.purchasecard img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.purchaseDetails p:nth-child(odd) {
+    background-color: rgb(230, 230, 230);
+}
+
+
+.buy-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 100px;
+}
+
+.invcontent{
+ 
+    max-width: 500px;
+ 
+  padding: 1rem;
+
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  font-family: sans-serif;
+  color: white;
+}
+
+.invcontent img{
+  max-width: 250px;
+}
+.purchase-form {
+  max-width: 500px;
+ 
+  padding: 1rem;
+ 
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  font-family: sans-serif;
+  color: black;
+}
+
+.form-row {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-row input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.submit-btn {
+  background-color: #0077cc;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+
+}
+
+.submit-btn:hover {
+  background-color: #005fa3;
+}

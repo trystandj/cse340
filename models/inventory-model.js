@@ -182,7 +182,30 @@ async function savePurchase(
     return null
   }
 }
+async function getPurchasesWithInventoryAndAccount() {
+  try {
+    const sql = `
+      SELECT p.*, 
+             i.inv_make, 
+             i.inv_model, 
+             i.inv_price, 
+             i.inv_year, 
+             i.inv_color,
+             i.inv_image,
+             a.account_firstname,
+             a.account_lastname,
+             a.account_email
+      FROM purchase p
+      JOIN inventory i ON p.inv_id = i.inv_id
+      JOIN account a ON p.account_id = a.account_id
+      ORDER BY p.purchase_id DESC
+    `;
+    const result = await pool.query(sql);
+    return result.rows;
+  } catch (error) {
+    throw error;
+  }
+}
 
 
-
-module.exports = { savePurchase, getClassifications, getInventoryByClassificationId, getInventoryByDetailId, addClassificationRow, addViewRow, updateInventory, deleteInventoryItem};
+module.exports = { getPurchasesWithInventoryAndAccount, savePurchase, getClassifications, getInventoryByClassificationId, getInventoryByDetailId, addClassificationRow, addViewRow, updateInventory, deleteInventoryItem};

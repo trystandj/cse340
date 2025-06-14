@@ -1,4 +1,4 @@
-<!-- This is the content Heading -->
+
 <% if (title) { %>
 <h1><%= title %></h1>
 <% } else {
@@ -15,7 +15,7 @@
 
 <%- messages() %>
 
-<!-- This is the content -->
+
 <div class="account-content">
   <h2>Welcome, <%= accountData.account_firstname %>!</h2>
   <p>You're logged in</p>
@@ -25,10 +25,18 @@
     <a title="Click to edit account" href="/account/update-account">Edit Account Information</a>
   </div>
 
+    <div class="account-actions">
+    <h3>Manage Purchase Request</h3>
+    <a title="Click to edit account" href="/inv/edit-purchase">Edit Purchase Request</a>
+  </div>
+
   <% if (locals.loggedin && (accountData.account_type === "Employee" || accountData.account_type === "Admin")) { %>
     <div class="inventory-actions">
       <h3>Inventory Management</h3>
       <a title="Click to manage inventory" href="/inv/management">Manage Inventory</a>
+
+      <h3>View Purhcase Request</h3>
+      <a href="/inv/purchases">Purchase Requests</a>
     </div>
   <% } %>
 </div>

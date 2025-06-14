@@ -1,5 +1,6 @@
 const { body, validationResult } = require("express-validator")
 const utilities = require("../utilities")
+const invModel = require("../models/inventory-model")
 
 const validate = {}
 
@@ -173,10 +174,14 @@ validate.purchaseRules = [
 ]
 
 validate.checkPurchaseData = async (req, res, next) => {
-  const errors = validationResult(req)
-  const nav = await utilities.getNav()
+  const errors = validationResult(req);
+  const nav = await utilities.getNav();
 
   if (!errors.isEmpty()) {
+   
+    const data = await invModel.getInventoryByDetailId(req.body.inv_id);
+    const grid = await utilities.buildBuyGrid(data);
+
     return res.status(400).render("inventory/buy", {
       title: "Purchase Request",
       nav,
@@ -189,9 +194,11 @@ validate.checkPurchaseData = async (req, res, next) => {
       prch_trade: req.body.prch_trade,
       prch_custom: req.body.prch_custom,
       inv_id: req.body.inv_id,
-    })
+      grid, 
+      account_id: res.locals.accountData.account_id,
+    });
   }
 
-  next()
-}
+  next();
+};
 module.exports = validate

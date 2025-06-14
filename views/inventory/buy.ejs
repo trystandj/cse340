@@ -17,54 +17,57 @@
 
 <%- messages() %>
 <section class="buy-container">
+<div class="buy-container1">
+
   <%- grid %>
 
-  <div class="buy-form">
-    <h2>Purchase Request</h2>
-    <div class="add-view-container">
-      <form action="/inv/buy" method="post"> 
+</div>
+<form action="/inv/buy" method="post" class="purchase-form">
 
-        <div class="form-group">
-          <label for="prch_contact">Contact Information:</label>
-          <input type="text" id="prch_contact" name="prch_contact" required value="<%= locals.prch_contact %>">
-        </div>
-
-        <div class="form-group">
-          <label for="prch_credit">Credit Score:</label>
-          <input type="text" id="prch_credit" name="prch_credit" value="<%= locals.prch_credit %>">
-        </div>
-
-        <div class="form-group">
-          <label for="prch_down_payment">Down Payment Offer:</label>
-          <input type="text" id="prch_down_payment" name="prch_down_payment" required value="<%= locals.prch_down_payment %>">
-        </div>
-
-        <div class="form-group">
-          <label for="prch_time_loan">Loan Period (Months):</label>
-          <input type="text" id="prch_time_loan" name="prch_time_loan" required value="<%= locals.prch_time_loan %>">
-        </div>
-
-        <div class="form-group">
-          <label for="prch_pay_meathod">Preferred Payment Method:</label>
-          <input type="text" id="prch_pay_meathod" name="prch_pay_meathod" required value="<%= locals.prch_pay_meathod %>">
-        </div>
-
-        <div class="form-group">
-          <label for="prch_trade">Trade-in Allowance:</label>
-          <input type="text" id="prch_trade" name="prch_trade" value="<%= locals.prch_trade %>">
-        </div>
-
-        <div class="form-group">
-          <label for="prch_custom">Requested Add-Ons:</label>
-          <input type="text" id="prch_custom" name="prch_custom" value="<%= locals.prch_custom %>">
-        </div>
-
-        <input type="hidden" name="inv_id" value="<%= inv_id %>">
-        <input type="hidden" name="account_id" value="<%= account_id %>">
-        <div class="form-group">
-          <button type="submit">Place Request</button> 
-        </div>
-      </form>
-    </div>
+  <div class="form-row">
+    <label for="prch_contact">Contact Information:</label>
+    <input type="text" id="prch_contact" name="prch_contact" required minlength="5" value="<%= prch_contact ? prch_contact : '' %>">
   </div>
-</section>
+
+  <div class="form-row">
+    <label for="prch_credit">Credit Score:</label>
+    <input type="text" id="prch_credit" name="prch_credit" pattern="^\d{3}$" title="Must be exactly 3 digits" value="<%= prch_credit ? prch_credit : '' %>">
+  </div>
+
+  <div class="form-row">
+    <label for="prch_down_payment">Down Payment Offer:</label>
+    <input type="number" id="prch_down_payment" name="prch_down_payment" required min="0" step="0.01" value="<%= prch_down_payment ? prch_down_payment : '' %>">
+  </div>
+
+  <div class="form-row">
+    <label for="prch_time_loan">Loan Period (Months):</label>
+    <input type="number" id="prch_time_loan" name="prch_time_loan" required min="6" max="84" value="<%= prch_time_loan ? prch_time_loan : '' %>">
+  </div>
+
+  <div class="form-row">
+    <label for="prch_pay_meathod">Preferred Payment Method:</label>
+    <input type="text" id="prch_pay_meathod" name="prch_pay_meathod" required pattern="^[a-zA-Z\s]+$" title="Letters and spaces only" value="<%= prch_pay_meathod ? prch_pay_meathod : '' %>">
+  </div>
+
+  <div class="form-row">
+    <label for="prch_trade">Trade-in Allowance:</label>
+    <input type="number" id="prch_trade" name="prch_trade" min="0" step="0.01" value="<%= prch_trade ? prch_trade : '' %>">
+  </div>
+
+  <div class="form-row">
+    <label for="prch_custom">Requested Add-Ons:</label>
+    <input type="text" id="prch_custom" name="prch_custom" maxlength="100" value="<%= prch_custom ? prch_custom : '' %>">
+  </div>
+
+  <input type="hidden" name="inv_id" value="<%= inv_id %>">
+  <input type="hidden" name="account_id" value="<%= account_id %>">
+
+  <div class="form-row">
+    <button type="submit" class="submit-btn">Place Request</button>
+  </div>
+
+</form>
+
+
+
+  </section>
