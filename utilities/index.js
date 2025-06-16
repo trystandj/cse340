@@ -142,7 +142,7 @@ Util.buildDetailGrid = async function (data){
       grid += '<span><strong>Description:</strong> ' + vehicle.inv_description + '</span>';
       grid += '<span><strong>Color:</strong> ' + vehicle.inv_color + '</span>';
       grid += '<span><strong>Miles:</strong> ' + new Intl.NumberFormat('en-US').format(vehicle.inv_miles)   + '</span>';
-     grid += '<span><strong>Buy:</strong> ' + '<a href="../../inv/buy/' + vehicle.inv_id +'" title="View ' 
+     grid += '<span><strong>Buy:</strong> ' + '<a href="../../purchases/buy/' + vehicle.inv_id +'" title="View ' 
       + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
       + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>' 
       grid += '</div>'

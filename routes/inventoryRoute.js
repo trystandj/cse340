@@ -12,10 +12,6 @@ router.get("/type/:classificationId", utils.handleErrors(invController.buildByCl
 router.get("/detail/:detailId", utils.handleErrors(invController.buildByDetailId)); 
 
 
-// Route to Edit Purchase page by inv_id view
-
-router.get('/purchases', utils.checkEmployeeOrAdmin,  utils.handleErrors(invController.buildPurchaseRequestsByAccount))
-
 // error trigger 500
 router.get("/error-test", utils.handleErrors(invController.triggerError));
 
@@ -57,26 +53,6 @@ router.post(
 
 
 
-// Route to add view
-router.post(
-  "/buy",
-  regValidate.purchaseRules,
-  regValidate.checkPurchaseData,
-  utils.handleErrors(invController.savePurchases)
-);
-
-// Route to buy detail page by inv_id view
-router.get("/buy/:detailId",utils.checkLogin, utils.handleErrors(invController.buildBuyPageDetailId)); 
-
-
-
-// Route to add view
-router.post(
-  "/edit-purchase",
-  regValidate.purchaseRules,
-  regValidate.checkPurchaseData,
-  utils.handleErrors(invController.savePurchases)
-);
 
 router.post(
   "/delete",
